@@ -18,6 +18,11 @@ namespace R_TEx1316
         public string LastName { get; set; }
         public UserAccessLevel AccessLevel { get; set; }
 
+        public ExcelUser(string firstName, string lastName, UserAccessLevel accessLevel = UserAccessLevel.Default)
+        {
+
+        }
+
         public override string ToString()
         {
             string s = FirstName ?? "";
