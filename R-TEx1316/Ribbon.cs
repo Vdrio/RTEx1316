@@ -21,6 +21,9 @@ namespace R_TEx1316
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
             UserAccessForm form = new UserAccessForm();
+            form.checkedListBox1.Items.Add(new ExcelUser { FirstName = "Lucas", LastName = "Glass" }, false);
+            form.checkedListBox1.Items.Add(new ExcelUser { FirstName = "Jon", LastName = "Deming" }, false);
+            form.checkedListBox1.Items.Add(new ExcelUser { FirstName = "Friend Lee", LastName = "Deming" }, false);
             form.Show();
         }
     }

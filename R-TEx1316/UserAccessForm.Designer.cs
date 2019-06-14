@@ -44,13 +44,9 @@
             // checkedListBox1
             // 
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Items.AddRange(new object[] {
-            "User1",
-            "User2",
-            "User3"});
             this.checkedListBox1.Location = new System.Drawing.Point(65, 117);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(64, 64);
+            this.checkedListBox1.Size = new System.Drawing.Size(166, 64);
             this.checkedListBox1.TabIndex = 1;
             // 
             // UserAccessForm
@@ -69,6 +65,6 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        public System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }
