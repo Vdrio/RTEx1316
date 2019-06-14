@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Office.Tools.Ribbon;
 
 namespace R_TEx1316
@@ -24,7 +26,14 @@ namespace R_TEx1316
             form.checkedListBox1.Items.Add(new ExcelUser { FirstName = "Lucas", LastName = "Glass" }, false);
             form.checkedListBox1.Items.Add(new ExcelUser { FirstName = "Jon", LastName = "Deming" }, false);
             form.checkedListBox1.Items.Add(new ExcelUser { FirstName = "Friend Lee", LastName = "Deming" }, false);
+            form.checkedListBox1.ItemCheck += CheckedListBox1_ItemCheck;
             form.Show();
+        }
+
+        private void CheckedListBox1_ItemCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
+        {
+           CheckedListBox box = (CheckedListBox)sender;
+           Debug.WriteLine(box.Items[e.Index]);
         }
     }
 }

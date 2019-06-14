@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace R_TEx1316
 {
+    public enum UserAccessLevel
+    {
+        Default = 0, 
+        Admin = 1
+    }
+
     public class ExcelUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public UserAccessLevel AccessLevel { get; set; }
 
         public override string ToString()
         {
