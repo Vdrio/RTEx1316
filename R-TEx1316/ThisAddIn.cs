@@ -9,6 +9,7 @@ using Microsoft.Office.Interop.Excel;
 using System.Diagnostics;
 using ExcelTCPBindings;
 using ExcelTCP;
+using R_TEx1316.Actions;
 
 namespace R_TEx1316
 {
@@ -28,6 +29,7 @@ namespace R_TEx1316
         private Range activeRange;
 
 
+
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             try
@@ -36,7 +38,6 @@ namespace R_TEx1316
                 ExcelTCP.TCPClient.ConnectToServer();
                 NetworkDataHandler.SelectionReceived += SelectionLocationReceived;
                 NetworkDataHandler.ThankYouServer += NetworkDataHandler_ThankYouServer;
-                
                 StartCollab();
             }
             catch { }
@@ -46,6 +47,13 @@ namespace R_TEx1316
         {
             TCPClient.ThankYouServer();
         }
+
+        private void Application_WorkbookNewChart(Workbook Wb, Chart Ch)
+        {
+            ChartActions chartActions = new ChartActions(Ch);
+            Ch.SeriesChange += chartActions.SeriesChange;
+        }
+
 
         public void StartCollab()
         {
@@ -126,8 +134,9 @@ namespace R_TEx1316
                 r.AddComment(ActiveWorkbook?.Author + ": Updating this cell at the moment");
             }*/
 
-            RangePacket packet = new RangePacket();
 
+            RangePacket packet = new RangePacket();
+            //Target.Borders[XlBordersIndex.xlEdgeTop]
             Debug.WriteLine(Target.Address);
             packet.RangeInfo = Target.Address;
             ExcelUser user = new ExcelUser("Lucas", "Glass");
@@ -163,11 +172,6 @@ namespace R_TEx1316
             Debug.WriteLine("Application Sheet Change");
             ActiveWorksheet.Range["A1"].ClearComments();
             ActiveWorksheet.Range["A1"].AddComment("Generic Comment");
-
-        }
-
-        private void Application_WorkbookNewChart(Workbook Wb, Chart Ch)
-        {
 
         }
 
@@ -207,8 +211,7 @@ namespace R_TEx1316
                 lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].Color = lastBottomColor;
                 lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].Weight = lastBottomWeight;
                 lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].LineStyle = lastBottomStyle;
-                
-                    lastRange.ClearComments();
+                lastRange.ClearComments();
                 if (lastComments.Count >= 0)
                     if (lastComments[0]!=null)
                         lastRange.AddComment(lastComments[0]);
@@ -248,7 +251,7 @@ namespace R_TEx1316
            lastComments.Add(selection.Comment?.Text());
             selection.ClearComments();
             Debug.WriteLine("Made it to comment adding");
-            if (selection.Count <= 2)
+            if (selection.Count < 2)
                 selection.AddComment(user.ToString() + ": Updating this cell at the moment");
             else
                 selection[selection.Columns.Count]?.AddComment(user.ToString() + ": Updating these cells at the moment");
