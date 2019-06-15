@@ -18,7 +18,7 @@ namespace R_TEx1316
             : base(Globals.Factory.GetRibbonFactory())
         {
             InitializeComponent();
-            RibbonToggleButton checkBox = Globals.Factory.GetRibbonFactory().CreateRibbonToggleButton();
+            /*RibbonToggleButton checkBox = Globals.Factory.GetRibbonFactory().CreateRibbonToggleButton();
             checkBox.Label = "User1";
             RibbonToggleButton checkBox2 = Globals.Factory.GetRibbonFactory().CreateRibbonToggleButton();
             checkBox2.Label = "User2";
@@ -28,7 +28,7 @@ namespace R_TEx1316
             menu1.Items.Add(checkBox);
             menu1.Items.Add(checkBox2);
             menu1.Items.Add(checkBox3);
-            checkBox.Click += CheckBox_Click;
+            checkBox.Click += CheckBox_Click;*/
         }
 
         private void CheckBox_Click(object sender, RibbonControlEventArgs e)

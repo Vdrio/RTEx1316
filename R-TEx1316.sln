@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R-TEx1316", "R-TEx1316\R-TEx1316.csproj", "{EF55BA68-7757-4E57-848B-5DD70E6FDC86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelTCP", "..\RTExTCP\ExcelTCP\ExcelTCP.csproj", "{BCEB447E-47B5-4A95-860F-2042AEE0D4DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelTCPBindings", "..\RTExTCP\ExcelTCPBindings\ExcelTCPBindings.csproj", "{ED5299E6-8E38-48EB-9698-F8CDCF5CA5A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelPackets", "..\RTExTCP\ExcelPackets\ExcelPackets.csproj", "{7363C6F8-BA1C-47F7-A4CF-84A5DB75AFF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{EF55BA68-7757-4E57-848B-5DD70E6FDC86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF55BA68-7757-4E57-848B-5DD70E6FDC86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF55BA68-7757-4E57-848B-5DD70E6FDC86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCEB447E-47B5-4A95-860F-2042AEE0D4DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCEB447E-47B5-4A95-860F-2042AEE0D4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCEB447E-47B5-4A95-860F-2042AEE0D4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCEB447E-47B5-4A95-860F-2042AEE0D4DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED5299E6-8E38-48EB-9698-F8CDCF5CA5A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED5299E6-8E38-48EB-9698-F8CDCF5CA5A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED5299E6-8E38-48EB-9698-F8CDCF5CA5A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED5299E6-8E38-48EB-9698-F8CDCF5CA5A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7363C6F8-BA1C-47F7-A4CF-84A5DB75AFF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7363C6F8-BA1C-47F7-A4CF-84A5DB75AFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7363C6F8-BA1C-47F7-A4CF-84A5DB75AFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7363C6F8-BA1C-47F7-A4CF-84A5DB75AFF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

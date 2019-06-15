@@ -7,6 +7,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using System.Diagnostics;
+using ExcelTCPBindings;
+using ExcelTCP;
 
 namespace R_TEx1316
 {
@@ -28,8 +30,21 @@ namespace R_TEx1316
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            Debug.WriteLine("Starting up");
-            
+            try
+            {
+                Debug.WriteLine("Starting up");
+                ExcelTCP.TCPClient.ConnectToServer();
+                NetworkDataHandler.SelectionReceived += SelectionLocationReceived;
+                NetworkDataHandler.ThankYouServer += NetworkDataHandler_ThankYouServer;
+                
+                StartCollab();
+            }
+            catch { }
+        }
+
+        private void NetworkDataHandler_ThankYouServer(object sender, EventArgs e)
+        {
+            TCPClient.ThankYouServer();
         }
 
         public void StartCollab()
@@ -40,8 +55,6 @@ namespace R_TEx1316
             Application.WorkbookNewChart += Application_WorkbookNewChart;
             Application.SheetChange += Application_SheetChange;
             Application.SheetSelectionChange += Application_SheetSelectionChange;
-            Application.SheetActivate += Application_SheetActivate;
-            Application.SheetDeactivate += Application_SheetDeactivate;
         }
 
 
@@ -53,7 +66,7 @@ namespace R_TEx1316
         private List<string> lastComments;
         private void Application_SheetSelectionChange(object Sh, Range Target)
         {
-            if (lastRange != null)
+            /*if (lastRange != null)
             {
                 Debug.WriteLine(lastLeftColor);
                 lastRange.Borders.Item[XlBordersIndex.xlEdgeLeft].Color = lastLeftColor;
@@ -111,9 +124,15 @@ namespace R_TEx1316
                 lastComments.Add(r.Comment?.Text());
                 r.ClearComments();
                 r.AddComment(ActiveWorkbook?.Author + ": Updating this cell at the moment");
-            }
+            }*/
 
+            RangePacket packet = new RangePacket();
 
+            Debug.WriteLine(Target.Address);
+            packet.RangeInfo = Target.Address;
+            ExcelUser user = new ExcelUser("Lucas", "Glass");
+            packet.User = user;
+            TCPClient.SendSelectionUpdate(packet);
 
         }
 
@@ -123,21 +142,7 @@ namespace R_TEx1316
             Application.WorkbookNewSheet -= Application_WorkbookNewSheet;
             Application.WorkbookNewChart -= Application_WorkbookNewChart;
             Application.SheetChange -= Application_SheetChange;
-            Application.SheetActivate -= Application_SheetActivate;
-            Application.SheetDeactivate -= Application_SheetDeactivate;
-        }
-
-        private void Application_SheetDeactivate(object Sh)
-        {
-            Worksheet sheet = (Worksheet)Sh;
-            sheet.SelectionChange -= Sheet_SelectionChange;
-        }
-
-        private void Application_SheetActivate(object Sh)
-        {
-            Debug.WriteLine("Sheet Activated");
-            Worksheet sheet = (Worksheet)Sh;
-            //sheet.SelectionChange += Sheet_SelectionChange;
+            ExcelTCP.TCPClient.EndConnection();
         }
 
         private void Sheet_SelectionChange(Range Target)
@@ -179,6 +184,74 @@ namespace R_TEx1316
         private void Application_ProtectedWorkbookOpen(ProtectedViewWindow window)
         {
             Debug.WriteLine("New workbook opened: " + window.Workbook.Name);
+        }
+
+        void SelectionLocationReceived(object sender, EventArgs e)
+        {
+            RangePacket packet = (RangePacket)sender;
+            Range selection = ActiveWorksheet.Range[packet.RangeInfo];
+            ExcelUser user = packet.User;
+
+            if (lastRange != null)
+            {
+                Debug.WriteLine(lastLeftColor);
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeLeft].Color = lastLeftColor;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeLeft].Weight = lastLeftWeight;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeLeft].LineStyle = lastLeftStyle;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeTop].Color = lastTopColor;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeTop].Weight = lastTopWeight;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeTop].LineStyle = lastTopStyle;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeRight].Color = lastRightColor;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeRight].Weight = lastRightWeight;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeRight].LineStyle = lastRightStyle;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].Color = lastBottomColor;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].Weight = lastBottomWeight;
+                lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].LineStyle = lastBottomStyle;
+                int count = 0;
+                foreach (Range r in lastRange)
+                {
+                    r.ClearComments();
+                    if (lastComments[count] != null)
+                        r.AddComment(lastComments[count]);
+                    count++;
+                }
+                //all you have to do is .copy!!!!!!!!!!!!!!!!!!!!!!
+                selection.Copy(lastRange);
+                ActiveWorksheet.Range["A1"].Value = "test";
+            }
+            lastRange = selection;
+            Debug.WriteLine("got selection change");
+            ActiveRange = selection;
+            lastComments = new List<string>();
+
+            lastLeftColor = (XlRgbColor)selection.Borders.Item[XlBordersIndex.xlEdgeLeft].Color;
+            lastLeftWeight = (XlBorderWeight)selection.Borders.Item[XlBordersIndex.xlEdgeLeft].Weight;
+            lastLeftStyle = (XlLineStyle)selection.Borders.Item[XlBordersIndex.xlEdgeLeft].LineStyle;
+            lastTopColor = (XlRgbColor)selection.Borders.Item[XlBordersIndex.xlEdgeTop].Color;
+            lastTopWeight = (XlBorderWeight)selection.Borders.Item[XlBordersIndex.xlEdgeTop].Weight;
+            lastTopStyle = (XlLineStyle)selection.Borders.Item[XlBordersIndex.xlEdgeTop].LineStyle;
+            lastRightColor = (XlRgbColor)selection.Borders.Item[XlBordersIndex.xlEdgeRight].Color;
+            lastRightWeight = (XlBorderWeight)selection.Borders.Item[XlBordersIndex.xlEdgeRight].Weight;
+            lastRightStyle = (XlLineStyle)selection.Borders.Item[XlBordersIndex.xlEdgeRight].LineStyle;
+            lastBottomColor = (XlRgbColor)selection.Borders.Item[XlBordersIndex.xlEdgeBottom].Color;
+            lastBottomWeight = (XlBorderWeight)selection.Borders.Item[XlBordersIndex.xlEdgeBottom].Weight;
+            lastBottomStyle = (XlLineStyle)selection.Borders.Item[XlBordersIndex.xlEdgeBottom].LineStyle;
+
+            selection.Borders.Item[XlBordersIndex.xlEdgeLeft].Color = XlRgbColor.rgbBlue;
+            selection.Borders.Item[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlMedium;
+            selection.Borders.Item[XlBordersIndex.xlEdgeTop].Color = XlRgbColor.rgbBlue;
+            selection.Borders.Item[XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlMedium;
+            selection.Borders.Item[XlBordersIndex.xlEdgeRight].Color = XlRgbColor.rgbBlue;
+            selection.Borders.Item[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
+            selection.Borders.Item[XlBordersIndex.xlEdgeBottom].Color = XlRgbColor.rgbBlue;
+            selection.Borders.Item[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
+            foreach (Range r in selection)
+            {
+                lastComments.Add(r.Comment?.Text());
+                r.ClearComments();
+                r.AddComment(user.ToString() + ": Updating this cell at the moment");
+            }
+
         }
 
         #region VSTO generated code

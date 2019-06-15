@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ExcelTCPBindings;
 using Microsoft.Office.Tools.Ribbon;
 
 namespace R_TEx1316
@@ -23,11 +24,19 @@ namespace R_TEx1316
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
             UserAccessForm form = new UserAccessForm();
-            form.checkedListBox1.Items.Add(new ExcelUser { FirstName = "Lucas", LastName = "Glass" }, false);
-            form.checkedListBox1.Items.Add(new ExcelUser { FirstName = "Jon", LastName = "Deming" }, false);
-            form.checkedListBox1.Items.Add(new ExcelUser { FirstName = "Friend Lee", LastName = "Deming" }, false);
-            form.checkedListBox1.ItemCheck += CheckedListBox1_ItemCheck;
+            ExcelUser me = new ExcelUser("Lucas", "Glass", UserAccessLevel.Admin);
+            form.checkedListBox1.Items.Add(me);
+            form.checkedListBox1.Items.Add(new ExcelUser() { FirstName = "Jon", LastName = "Deming" }, false);
+            form.checkedListBox1.Items.Add(new ExcelUser() { FirstName = "Friend Lee", LastName = "Deming" }, false);
+            //me.OnAccessLevelChanged += Me_OnAccessLevelChanged;
+            me.AccessLevel = UserAccessLevel.Default;
+            //form.checkedListBox1.ItemCheck += CheckedListBox1_ItemCheck;
             form.Show();
+        }
+
+        public void Me_OnAccessLevelChanged(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Ribbon detected access level change");
         }
 
         private void CheckedListBox1_ItemCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)

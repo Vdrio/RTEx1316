@@ -156,7 +156,6 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ExcelUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -210,6 +209,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\checkmark-symbol-png-background-12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RTExTCP\ExcelTCPBindings\ExcelTCPBindings.csproj">
+      <Project>{ed5299e6-8e38-48eb-9698-f8cdcf5ca5a1}</Project>
+      <Name>ExcelTCPBindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RTExTCP\ExcelTCP\ExcelTCP.csproj">
+      <Project>{bceb447e-47b5-4a95-860f-2042aee0d4da}</Project>
+      <Name>ExcelTCP</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
