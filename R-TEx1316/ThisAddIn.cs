@@ -63,7 +63,7 @@ namespace R_TEx1316
         private XlRgbColor lastLeftColor, lastTopColor, lastRightColor, lastBottomColor;
         private XlBorderWeight lastLeftWeight, lastTopWeight, lastRightWeight, lastBottomWeight;
         private XlLineStyle lastLeftStyle, lastTopStyle, lastRightStyle, lastBottomStyle;
-        private List<string> lastComments;
+        private List<string> lastComments = new List<string>();
         private void Application_SheetSelectionChange(object Sh, Range Target)
         {
             /*if (lastRange != null)
@@ -209,8 +209,9 @@ namespace R_TEx1316
                 lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].LineStyle = lastBottomStyle;
                 
                     lastRange.ClearComments();
-                if (lastComments[0]!=null)
-                    lastRange.AddComment(lastComments[0]);
+                if (lastComments.Count >= 0)
+                    if (lastComments[0]!=null)
+                        lastRange.AddComment(lastComments[0]);
                     
                 
                 //all you have to do is .copy!!!!!!!!!!!!!!!!!!!!!!
@@ -246,10 +247,11 @@ namespace R_TEx1316
             
            lastComments.Add(selection.Comment?.Text());
             selection.ClearComments();
-            if (selection.Count == 1)
+            Debug.WriteLine("Made it to comment adding");
+            if (selection.Count <= 2)
                 selection.AddComment(user.ToString() + ": Updating this cell at the moment");
             else
-                selection[selection.Columns.Count].AddComment(user.ToString() + ": Updating these cells at the moment");
+                selection[selection.Columns.Count]?.AddComment(user.ToString() + ": Updating these cells at the moment");
 
 
         }
