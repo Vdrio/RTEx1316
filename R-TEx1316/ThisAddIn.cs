@@ -249,7 +249,7 @@ namespace R_TEx1316
             if (selection.Count == 1)
                 selection.AddComment(user.ToString() + ": Updating this cell at the moment");
             else
-                selection[0].AddComment(user.ToString() + ": Updating this cell at the moment");
+                selection[selection.Columns.Count].AddComment(user.ToString() + ": Updating these cells at the moment");
 
 
         }
