@@ -244,10 +244,13 @@ namespace R_TEx1316
             selection.Borders.Item[XlBordersIndex.xlEdgeBottom].Color = XlRgbColor.rgbBlue;
             selection.Borders.Item[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
             
-                lastComments.Add(selection.Comment?.Text());
+           lastComments.Add(selection.Comment?.Text());
             selection.ClearComments();
-            selection.AddComment(user.ToString() + ": Updating this cell at the moment");
-            
+            if (selection.Count == 1)
+                selection.AddComment(user.ToString() + ": Updating this cell at the moment");
+            else
+                selection[0].AddComment(user.ToString() + ": Updating this cell at the moment");
+
 
         }
 
