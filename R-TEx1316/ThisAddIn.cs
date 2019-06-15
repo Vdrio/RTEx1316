@@ -207,14 +207,12 @@ namespace R_TEx1316
                 lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].Color = lastBottomColor;
                 lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].Weight = lastBottomWeight;
                 lastRange.Borders.Item[XlBordersIndex.xlEdgeBottom].LineStyle = lastBottomStyle;
-                int count = 0;
-                foreach (Range r in lastRange)
-                {
-                    r.ClearComments();
-                    if (lastComments[count] != null)
-                        r.AddComment(lastComments[count]);
-                    count++;
-                }
+                
+                    lastRange.ClearComments();
+                if (lastComments[0]!=null)
+                    lastRange.AddComment(lastComments[0]);
+                    
+                
                 //all you have to do is .copy!!!!!!!!!!!!!!!!!!!!!!
                 //selection.Copy(lastRange);
                 //ActiveWorksheet.Range["A1"].Value = "test";
@@ -245,12 +243,11 @@ namespace R_TEx1316
             selection.Borders.Item[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
             selection.Borders.Item[XlBordersIndex.xlEdgeBottom].Color = XlRgbColor.rgbBlue;
             selection.Borders.Item[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
-            foreach (Range r in selection)
-            {
-                lastComments.Add(r.Comment?.Text());
-                r.ClearComments();
-                r.AddComment(user.ToString() + ": Updating this cell at the moment");
-            }
+            
+                lastComments.Add(selection.Comment?.Text());
+            selection.ClearComments();
+            selection.AddComment(user.ToString() + ": Updating this cell at the moment");
+            
 
         }
 
