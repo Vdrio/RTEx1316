@@ -216,8 +216,8 @@ namespace R_TEx1316
                     count++;
                 }
                 //all you have to do is .copy!!!!!!!!!!!!!!!!!!!!!!
-                selection.Copy(lastRange);
-                ActiveWorksheet.Range["A1"].Value = "test";
+                //selection.Copy(lastRange);
+                //ActiveWorksheet.Range["A1"].Value = "test";
             }
             lastRange = selection;
             Debug.WriteLine("got selection change");
